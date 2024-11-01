@@ -67,33 +67,33 @@ jobs:
           echo "ECS_CLUSTER=$ECS_CLUSTER" >> $GITHUB_ENV
           echo "ECS_SERVICE=$ECS_SERVICE" >> $GITHUB_ENV
       
-      # - name: Login to Amazon ECR
-      #   id: login-ecr
-      #   uses: aws-actions/amazon-ecr-login@v2
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
 
-      # - name: Download task definition
-      #   run: |
-      #     aws ecs describe-task-definition \
-      #      --task-definition ${{ vars.APP_NAME }}-task-definition-family \
-      #      --query taskDefinition > task-definition.json
+      - name: Download task definition
+        run: |
+          aws ecs describe-task-definition \
+           --task-definition ${{ vars.APP_NAME }}-task-definition-family \
+           --query taskDefinition > task-definition.json
       
-      # # Update ECS Task Definition with image tag
-      # - name: Fill in the new image ID in the Amazon ECS task definition
-      #   id: task-def
-      #   uses: aws-actions/amazon-ecs-render-task-definition@v1
-      #   with:
-      #     task-definition: task-definition.json
-      #     container-name: ${{ vars.APP_NAME }}
-      #     image: "${{ steps.login-ecr.outputs.registry }}/${{ vars.ECR_REPO_NAME }}:${{ inputs.image-tag }}"
+      # Update ECS Task Definition with image tag
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: ${{ vars.APP_NAME }}
+          image: "${{ steps.login-ecr.outputs.registry }}/${{ vars.ECR_REPO_NAME }}:${{ inputs.image-tag }}"
 
-      # # Deploy new ECS Task
-      # - name: Deploy Amazon ECS task definition
-      #   uses: aws-actions/amazon-ecs-deploy-task-definition@v2
-      #   with:
-      #     task-definition: ${{ steps.task-def.outputs.task-definition }}
-      #     service: ${{ env.ECS_SERVICE }}
-      #     cluster: ${{ env.ECS_CLUSTER }}
-      #     wait-for-service-stability: true
+      # Deploy new ECS Task
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
       
       # # Output the app URL
       # - name: Set App URL
