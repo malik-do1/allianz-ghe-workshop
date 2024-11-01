@@ -65,7 +65,7 @@ jobs:
 
       - name: Detect Dockerfile changes
         id: detect-dockerfile-changes
-        uses: tj-actions/changed-files@v35
+        uses: tj-actions/changed-files@v45
         with:
           files: app/**
 
