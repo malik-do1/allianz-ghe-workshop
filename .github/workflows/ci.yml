@@ -24,7 +24,6 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          audience: sts.amazonaws.com.cn
           aws-region: ${{ vars.AWS_REGION }}
           role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
 
@@ -62,6 +61,8 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
+        with: 
+          mask-password: 'true'
 
       - name: Detect Dockerfile changes
         id: detect-dockerfile-changes
