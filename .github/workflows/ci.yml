@@ -101,7 +101,7 @@ jobs:
       # Scan new image
       - name: Scan Docker image
         id: image-scan
-        uses: alexjurkiewicz/ecr-scan-image@vv2.0.1
+        uses: alexjurkiewicz/ecr-scan-image@v2.0.1
         with:
           repository: ${{ vars.ECR_REPO_NAME }}
           tag: latest
