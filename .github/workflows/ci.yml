@@ -57,7 +57,7 @@ jobs:
       - name: List app files
         run: |
           ls -l $GITHUB_WORKSPACE/app
-          
+
       # Build images
       - name: Login to Amazon ECR
         id: login-ecr
@@ -69,7 +69,7 @@ jobs:
         with:
           files: app/**
 
-       - name: Build, tag, and push image to AWS ECR
+      - name: Build, tag, and push image to AWS ECR
         id: build-image
         if: steps.detect-dockerfile-changes.outputs.any_modified == 'true'
         env:
